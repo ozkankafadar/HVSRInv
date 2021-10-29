@@ -1,2 +1,2 @@
 # HVSRInv-GUI
-A MATLAB based graphical user interface developed for forward calculation and inversion of horizontal-to-vertical spectral ratio.
+HVSRInv-GUI is a MATLAB based graphical user interface developed for forward calculation and inversion of horizontal-to-vertical spectral ratio. This code uses the equivalent linear approach based on the viscoelastic Kelvin-Voigt model to compute the theoretical site response of the horizontally stratified soil layers. Furthermore, the developed graphical user interface can easily estimate the dynamic parameters such as thicknesses, shear wave velocities, densities and damping ratios of the soil layers through an elitist genetic algorithm, and thereby obtain the shear wave velocity profiles.
