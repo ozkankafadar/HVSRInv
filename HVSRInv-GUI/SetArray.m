@@ -20,7 +20,6 @@ for i=2:length(V)
     j=j+1;
 end;
 
-%y(j-1)=y(j-1)+sum(y)*2/100;
 y(j-1)=depthmax;
 end
 

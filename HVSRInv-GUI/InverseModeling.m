@@ -1,30 +1,4 @@
 function varargout = InverseModeling(varargin)
-% FORWARDAPP MATLAB code for ForwardApp.fig
-%      FORWARDAPP, by itself, creates a new FORWARDAPP or raises the existing
-%      singleton*.
-%
-%      H = FORWARDAPP returns the handle to a new FORWARDAPP or the handle to
-%      the existing singleton*.
-%
-%      FORWARDAPP('CALLBACK',hObject,eventData,handles,...) calls the local
-%      function named CALLBACK in FORWARDAPP.M with the given input arguments.
-%
-%      FORWARDAPP('Property','Value',...) creates a new INVERSIONAPP or raises the
-%      existing singleton*.  Starting from the left, property value pairs are
-%      applied to the GUI before InversionApp_OpeningFcn gets called.  An
-%      unrecognized property name or invalid value makes property application
-%      stop.  All inputs are passed to ForwardApp_OpeningFcn via varargin.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help ForwardApp
-
-% Last Modified by GUIDE v2.5 28-May-2021 01:54:55
-
-% Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
@@ -41,70 +15,31 @@ if nargout
 else
     gui_mainfcn(gui_State, varargin{:});
 end
-% End initialization code - DO NOT EDIT
 
-
-% --- Executes just before InversionApp is made visible.
 function InverseModeling_OpeningFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to InversionApp (see VARARGIN)
-
-% Choose default command line output for InversionApp
 handles.output = hObject;
-
-% Update handles structure
 guidata(hObject, handles);
-
-% UIWAIT makes InversionApp wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
 movegui(gcf,'center');
 
-
-% --- Outputs from this function are returned to the command line.
 function varargout = InverseModeling_OutputFcn(hObject, eventdata, handles) 
-% varargout  cell array for returning output args (see VARARGOUT);
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Get default command line output from handles structure
 varargout{1} = handles.output;
 
-%movegui(gcf,'center');
-
-
-% --- Executes on button press in computeHVSRBtn.
 function computeHVSRBtn_Callback(hObject, eventdata, handles)
-% hObject    handle to computeHVSRBtn (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-
-% --- Executes on button press in startForwardBtn.
 function startForwardBtn_Callback(hObject, eventdata, handles)
-% hObject    handle to startForwardBtn (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 global initModData;
 global results;
 global freqs;
 global HVSR;
-
 global freqs2;
 global HVSR2;
 global freqMin; 
 global freqMax;
 global invNum;
-%global Vs;
-%global modelx;
-%global modely;
-
 global par;
 
 results=[];
+
 set(handles.uitable2,'Data',results);
 
 %Check popNum value
@@ -255,6 +190,7 @@ if freqs(end)<freqMax
 end;
 
 Vs=[];
+
 cla(handles.axes1);
 cla(handles.axes2);
 
@@ -294,7 +230,6 @@ depthmax=sum(initModData(:,2));
 axes(handles.axes1);
 plot(modelx,modely,'linewidth',4,'color','r');
 set(gca,'FontSize',11)
-%set(gca,'Color','y')
 
 for i=1:layerNum
     if i<layerNum
@@ -333,21 +268,9 @@ zoom on;
 
 set(handles.pushbutton23,'enable','on');
 
-    
-% --- Executes on button press in saveGrpBtn.
 function saveGrpBtn_Callback(hObject, eventdata, handles)
-% hObject    handle to saveGrpBtn (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
 
 function edit1_Callback(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of edit1 as text
-%        str2double(get(hObject,'String')) returns contents of edit1 as a double
 global initModData;
 global HVSR;
 
@@ -383,177 +306,51 @@ else
    return;
 end;
 
-% --- Executes during object creation, after setting all properties.
 function edit1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
-
-% --- Executes on button press in loadPrmBtn.
 function loadPrmBtn_Callback(hObject, eventdata, handles)
-% hObject    handle to loadPrmBtn (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
     
-
-% --- Executes on button press in savePrmBtn.
 function savePrmBtn_Callback(hObject, eventdata, handles)
-% hObject    handle to savePrmBtn (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-%Check number of layers textbox
-
-
 
 function edit2_Callback(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit2 as text
-%        str2double(get(hObject,'String')) returns contents of edit2 as a double
-
-
-% --- Executes during object creation, after setting all properties.
 function edit2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
-
-% --- Executes on button press in pushbutton9.
 function pushbutton9_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-
-% --- Executes on button press in closeBtn.
 function closeBtn_Callback(hObject, eventdata, handles)
-% hObject    handle to closeBtn (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-
-% --- Executes on button press in pushbutton15.
 function pushbutton15_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton15 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
 
 function edit3_Callback(hObject, eventdata, handles)
-% hObject    handle to edit3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit3 as text
-%        str2double(get(hObject,'String')) returns contents of edit3 as a double
-
-
-% --- Executes during object creation, after setting all properties.
 function edit3_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
 
 function edit4_Callback(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit4 as text
-%        str2double(get(hObject,'String')) returns contents of edit4 as a double
-
-
-% --- Executes during object creation, after setting all properties.
 function edit4_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
-% --- Executes on key press with focus on edit1 and none of its controls.
 function edit1_KeyPressFcn(hObject, eventdata, handles)
-% hObject    handle to edit1 (see GCBO)
-% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.UICONTROL)
-%	Key: name of the key that was pressed, in lower case
-%	Character: character interpretation of the key(s) that was pressed
-%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
-% handles    structure with handles and user data (see GUIDATA)
 
-
-
-% --- Executes on key press with focus on edit2 and none of its controls.
 function edit2_KeyPressFcn(hObject, eventdata, handles)
-% hObject    handle to edit2 (see GCBO)
-% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.UICONTROL)
-%	Key: name of the key that was pressed, in lower case
-%	Character: character interpretation of the key(s) that was pressed
-%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
-% handles    structure with handles and user data (see GUIDATA)
 
-
-
-% --- Executes on key press with focus on edit3 and none of its controls.
 function edit3_KeyPressFcn(hObject, eventdata, handles)
-% hObject    handle to edit3 (see GCBO)
-% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.UICONTROL)
-%	Key: name of the key that was pressed, in lower case
-%	Character: character interpretation of the key(s) that was pressed
-%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
-% handles    structure with handles and user data (see GUIDATA)
 
-
-
-% --- Executes on key press with focus on edit4 and none of its controls.
 function edit4_KeyPressFcn(hObject, eventdata, handles)
-% hObject    handle to edit4 (see GCBO)
-% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.UICONTROL)
-%	Key: name of the key that was pressed, in lower case
-%	Character: character interpretation of the key(s) that was pressed
-%	Modifier: name(s) of the modifier key(s) (i.e., control, shift) pressed
-% handles    structure with handles and user data (see GUIDATA)
 
-
-% --- Executes when entered data in editable cell(s) in uitable1.
 function uitable1_CellEditCallback(hObject, eventdata, handles)
-% hObject    handle to uitable1 (see GCBO)
-% eventdata  structure with the following fields (see MATLAB.UI.CONTROL.TABLE)
-%	Indices: row and column indices of the cell(s) edited
-%	PreviousData: previous data for the cell(s) edited
-%	EditData: string(s) entered by the user
-%	NewData: EditData or its converted form set on the Data property. Empty if Data was not changed
-%	Error: error string when failed to convert EditData to appropriate value for Data
-% handles    structure with handles and user data (see GUIDATA)
 global initModData;
 initModData=get(handles.uitable1,'Data');
 id=eventdata.Indices;
@@ -592,64 +389,23 @@ end;
 
 set(handles.uitable1,'Data',initModData);
 
-% --- Executes on button press in checkbox1.
 function checkbox1_Callback(hObject, eventdata, handles)
-% hObject    handle to checkbox1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hint: get(hObject,'Value') returns toggle state of checkbox1
-
-
 
 function edit5_Callback(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit5 as text
-%        str2double(get(hObject,'String')) returns contents of edit5 as a double
-
-
-% --- Executes during object creation, after setting all properties.
 function edit5_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit5 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
 function edit6_Callback(hObject, eventdata, handles)
-% hObject    handle to edit6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit6 as text
-%        str2double(get(hObject,'String')) returns contents of edit6 as a double
-
-
-% --- Executes during object creation, after setting all properties.
 function edit6_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit6 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
-
-% --- Executes on button press in pushbutton20.
 function pushbutton20_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton20 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 global initModData;
 global HVSR;
 
@@ -691,15 +447,10 @@ else
    
    if ~isempty(initModData) && ~isempty(HVSR)
     set(handles.startForwardBtn,'enable','on');
-   end;
-   
+   end;   
 end;
 
-% --- Executes on button press in pushbutton21.
 function pushbutton21_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton21 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 global initModData;
 
 layerNum=0;
@@ -785,7 +536,6 @@ if layerNum>1
 
 [file,path] = uiputfile('*.txt');
 if isequal(file,0) || isequal(path,0)
-   
 else
     file=fullfile(path,file);
     f=fopen(file,'wt');
@@ -800,16 +550,10 @@ else
     fclose(f);
     
     set(handles.uitable1,'Data',initModData);
-end
-   
+end;   
 end;
 
-
-% --- Executes on button press in loadHVSRBtn.
 function loadHVSRBtn_Callback(hObject, eventdata, handles)
-% hObject    handle to loadHVSRBtn (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 global freqs;
 global HVSR;
 global initModData;
@@ -844,34 +588,22 @@ else
    
    if ~isempty(initModData) && ~isempty(HVSR)
     set(handles.startForwardBtn,'enable','on');
-   end;
-   
+   end;   
 end;
 
-% --- Executes on button press in pushbutton23.
 function pushbutton23_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton23 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 global freqs;
 global HVSR;
-
 global freqs2;
 global HVSR2;
 global freqMin; 
 global freqMax;
 global invNum;
 global initModData;
-
-%global modelx;
-%global modely;
-%global Vs;
-
 global par;
 
 [file,path] = uiputfile('*.png,*.fig');
 if isequal(file,0) || isequal(path,0)
-
 else
     file=fullfile(path,file);
     
@@ -895,7 +627,6 @@ end;
 
 [file,path] = uiputfile('*.png,*.fig');
 if isequal(file,0) || isequal(path,0)
-
 else
     file=fullfile(path,file);    
     fig2=figure(2); 
@@ -928,18 +659,12 @@ else
     H=H/sz(1);
     Vs=Vs/sz(1);
     
-    
-    
     [modelx modely]=SetArray(H,Vs,depthmax);    
-    
-    %aaa=min(Vs2(:))-(max(Vs2(:))-min(Vs2(:)))*10/100;
-    %bbb=max(Vs2(:))+(max(Vs2(:))-min(Vs2(:)))*10/100;
     
     plot(modelx,modely,'linewidth',4,'color','r');
     xlabel('Velocity (ms^{-1})');
     ylabel('Depth (m)');
-    %xlim([min(Vs(:))-(max(Vs(:))-min(Vs(:)))*10/100 max(Vs(:))+(max(Vs(:))-min(Vs(:)))*10/100]);
-    %ylim([0 modely(end)*1.1]);
+
     set(gca, 'YDir','reverse')
     xlim([velmin velmax]);
     ylim([0 depthmax]);
@@ -951,66 +676,22 @@ else
     close(fig2);    
 end;
 
-% --- Executes on button press in pushbutton24.
 function pushbutton24_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton24 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-
 
 function edit8_Callback(hObject, eventdata, handles)
-% hObject    handle to edit8 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit8 as text
-%        str2double(get(hObject,'String')) returns contents of edit8 as a double
-
-
-% --- Executes during object creation, after setting all properties.
 function edit8_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit8 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
 function figure1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to computeHVSRBtn (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-
 
 function edit9_Callback(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
 
-% Hints: get(hObject,'String') returns contents of edit9 as text
-%        str2double(get(hObject,'String')) returns contents of edit9 as a double
-
-
-% --- Executes during object creation, after setting all properties.
 function edit9_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to edit9 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
 
-
-% --- Executes during object creation, after setting all properties.
 function uitable2_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to uitable2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called

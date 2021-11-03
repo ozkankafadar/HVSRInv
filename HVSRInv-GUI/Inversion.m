@@ -133,7 +133,6 @@ for j=1:invNum
             ylim([depthmin depthmax]);
             set(handle, 'YDir','reverse')
             set(handle,'FontSize',12) 
-            %set(handles,'Color','k')
             grid on
         end
         
@@ -154,9 +153,6 @@ for j=1:invNum
     close(fp); 
     
     modelxs(j,:)=modelx;
-    modelys(j,:)=modely;
-    
+    modelys(j,:)=modely;    
 end;
-
 end
-

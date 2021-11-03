@@ -12,7 +12,7 @@ if sum(fitt)>=size(Pop,1)
     don=size(Pop,1);
 else
     don=sum(fitt);
-end
+end;
 
 for is=1:don;
     output(is,:)=Pop(x(1,is-m),:);
@@ -20,13 +20,13 @@ for is=1:don;
        m=m;
     else
        m=m+1;
-    end
-end
+    end;
+end;
         
 if size(output,1)<size(Pop,1)
     [yf,xf]=sort(Fit,'descend');
     for ih=1:size(Pop,1)-size(output,1)
        output(is+ih,:)=Pop(x(xf(ih)),:);
-    end
-end
+    end;
+end;
 end
