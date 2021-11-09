@@ -1,0 +1,12 @@
+Number_of_Layers: 5
+Number_of_Samples: 1000
+Layer_No: 1
+50 300 1.700 0.020
+Layer_No: 2
+30 200 1.500 0.040
+Layer_No: 3
+80 650 1.800 0.010
+Layer_No: 4
+60 1300 2.000 0.009
+Layer_No: 5
+0 1800 2.300 0.006
