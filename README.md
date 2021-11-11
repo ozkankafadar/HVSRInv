@@ -1,5 +1,5 @@
 # HVSRInv
-HVSRInv: Estimation of the amplification properties of soil through HVSR inversion based on an elitist genetic algorithm
+# HVSRInv: Estimation of the amplification properties of soil through HVSR inversion based on an elitist genetic algorithm
 
 Özkan Kafadar 
 Kocaeli University, Department of Computer Technologies, Kocaeli, Turkey
