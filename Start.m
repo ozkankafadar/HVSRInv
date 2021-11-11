@@ -33,11 +33,16 @@ function pushbutton2_Callback(hObject, eventdata, handles)
     InverseModeling();
 
 function pushbutton3_Callback(hObject, eventdata, handles)
+    close;
+
+function figure1_CloseRequestFcn(hObject, eventdata, handles)
     opts.Interpreter = 'tex';
     opts.Default = 'NO';
     quest = 'Are you sure you want to close the program?';
     answ = questdlg(quest,'CLOSE','YES','NO',opts);
     switch answ
         case 'YES'
+            delete(hObject);
             close all;
     end
+

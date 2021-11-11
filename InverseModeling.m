@@ -248,7 +248,7 @@ function startBtn_Callback(hObject, eventdata, handles)
         a=1;b=4;
         for j=1:sz(2)/4   
             c=S(a:b);
-            fprintf(f,'%1.3f %1.3f %1.3f %1.3f\n',c(1),c(2),c(3),c(4));
+            fprintf(f,'%1.4f %1.4f %1.4f %1.4f\n',c(1),c(2),c(3),c(4));
             a=a+4;b=b+4;
         end; 
     end;
@@ -264,9 +264,9 @@ function startBtn_Callback(hObject, eventdata, handles)
     while i<sz(2)
         H(j)=round(hMean(i));i=i+1;
         Vs(j)=round(hMean(i));i=i+1;
-        Den(j)=round(hMean(i),3);i=i+1;
-        Damp(j)=round(hMean(i),3);i=i+1;      
-        fprintf(f,'%1.3f %1.3f %1.3f %1.3f\n',H(j),Vs(j),Den(j),Damp(j));
+        Den(j)=round(hMean(i),4);i=i+1;
+        Damp(j)=round(hMean(i),4);i=i+1;      
+        fprintf(f,'%1.4f %1.4f %1.4f %1.4f\n',H(j),Vs(j),Den(j),Damp(j));
        j=j+1;
     end;
 
@@ -377,25 +377,25 @@ function modelPrmTable_CellEditCallback(hObject, eventdata, handles)
     %Damping Ratio
     if id(2)==3
         if initModData(id(1),3)<=1000
-            initModData(id(1),7)=(1/(2*0.06*initModData(id(1),3)))/2;
+            initModData(id(1),8)=(1/(2*0.06*initModData(id(1),3)));
         end;
         if  initModData(id(1),3)>1000 && initModData(id(1),3)<2000
-            initModData(id(1),7)=(1/(2*0.04*initModData(id(1),3)))/2;
+            initModData(id(1),8)=(1/(2*0.04*initModData(id(1),3)));
         end;
         if initModData(id(1),3)>=2000
-            initModData(id(1),7)=(1/(2*0.16*initModData(id(1),3)))/2;
+            initModData(id(1),8)=(1/(2*0.16*initModData(id(1),3)));
         end;
     end;
     
     if id(2)==4
         if initModData(id(1),4)<=1000
-            initModData(id(1),8)=(1/(2*0.06*initModData(id(1),4)))*2;
+            initModData(id(1),7)=(1/(2*0.06*initModData(id(1),4)));
         end;
         if  initModData(id(1),4)>1000 && initModData(id(1),4)<2000
-            initModData(id(1),8)=(1/(2*0.04*initModData(id(1),4)))*2;
+            initModData(id(1),7)=(1/(2*0.04*initModData(id(1),4)));
         end;
         if initModData(id(1),4)>=2000
-            initModData(id(1),8)=(1/(2*0.16*initModData(id(1),4)))*2;
+            initModData(id(1),7)=(1/(2*0.16*initModData(id(1),4)));
         end;
     end;
 
@@ -414,7 +414,7 @@ function loadBtn_Callback(hObject, eventdata, handles)
     global initModData;
     global HVSR;
 
-    [file,path] = uigetfile('*.txt');
+    [file,path] = uigetfile('*.txt',' ');
     if isequal(file,0) || isequal(path,0)
     else
         file=fullfile(path,file);
@@ -531,7 +531,7 @@ function saveBtn_Callback(hObject, eventdata, handles)
             end;
         end;
 
-        [file,path] = uiputfile('*.txt');
+        [file,path] = uiputfile('*.txt',' ');
         if isequal(file,0) || isequal(path,0)   
             set(handles.modelPrmTable,'Data',initModData);
         else
@@ -543,7 +543,7 @@ function saveBtn_Callback(hObject, eventdata, handles)
             for i=1:layerNum
                 S=initModData(i,:);
                 fprintf(f,'Layer_No: %d\n',i);
-                fprintf(f,'%1.3f %1.3f %d %1.3f %1.3f %d %1.3f %1.3f %d %1.3f %1.3f %d\n',S(1),S(2),S(3),S(4),S(5),S(6),S(7),S(8),S(9),S(10),S(11),S(12));
+                fprintf(f,'%1.4f %1.4f %1.4f %1.4f %1.4f %1.4f %1.4f %1.4f\n',S(1),S(2),S(3),S(4),S(5),S(6),S(7),S(8));
             end;
             fclose(f);
             set(handles.modelPrmTable,'Data',initModData);
@@ -563,7 +563,7 @@ function loadHVSRBtn_Callback(hObject, eventdata, handles)
     freqs=[];
     HVSR=[];
 
-    [file,path] = uigetfile('*.txt');
+    [file,path] = uigetfile('*.txt',' ');
     if isequal(file,0) || isequal(path,0)
     else
         file=fullfile(path,file);
@@ -601,6 +601,7 @@ function saveGraphicsBtn_Callback(hObject, eventdata, handles)
     global invNum;
     global initModData;
     global par;
+    global layerNum;
 
     [file,path] = uiputfile('*.png,*.fig');
     if isequal(file,0) || isequal(path,0)
@@ -671,7 +672,7 @@ function saveGraphicsBtn_Callback(hObject, eventdata, handles)
         if get(handles.coloredLayersChk, 'Value')
             newLim = xlim(handles.modelAxes);
             j=1;    
-            for i=1:5
+            for i=1:layerNum
                 patch([0 newLim(2) newLim(2) 0],[modely(j) modely(j) modely(j+1) modely(j+1)],cmap(i*5),'EdgeColor', 'k', 'FaceAlpha', 0.4);hold on;
                 j=j+2;        
             end;
@@ -680,7 +681,6 @@ function saveGraphicsBtn_Callback(hObject, eventdata, handles)
         plot(modelx,modely,'linewidth',4,'color','r');
 
         set(gca, 'YDir','reverse')
-        set(gca,'FontSize',11)
         xlim([0 max(modelx)+(max(modelx)-min(modelx))*5/100]);
         ylim([0 modely(end)]);
         xlabel('Velocity (ms^{-1})');

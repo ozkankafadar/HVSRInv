@@ -59,7 +59,7 @@ function [parameters] = Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,
             %Decode Operation
             for jk=1:layerNum
                 Velocity(jk,:)=round(Decode(pop(:,genePos(8*(jk-1)+1):genePos(8*(jk-1)+2)),minParam(4*(jk-1)+1),maxParam(4*(jk-1)+1)));
-                Density(jk,:)=round(Decode(pop(:,genePos(8*(jk-1)+3):genePos(8*(jk-1)+4)),minParam(4*(jk-1)+2),maxParam(4*(jk-1)+2)),2);
+                Density(jk,:)=round(Decode(pop(:,genePos(8*(jk-1)+3):genePos(8*(jk-1)+4)),minParam(4*(jk-1)+2),maxParam(4*(jk-1)+2)),4);
                 Damping(jk,:)=Decode(pop(:,genePos(8*(jk-1)+5):genePos(8*(jk-1)+6)),minParam(4*(jk-1)+3),maxParam(4*(jk-1)+3));
                 if jk<layerNum
                     Thickness(jk,:)=round(Decode(pop(:,genePos(8*(jk-1)+7):genePos(8*(jk-1)+8)),minParam(4*(jk-1)+4),maxParam(4*(jk-1)+4)));

@@ -189,7 +189,9 @@ function saveGrpBtn_Callback(hObject, eventdata, handles)
     global modelx;
     global modely;
     global Vs;
-
+    global uitableData;
+    global layerNum;
+    
     [file,path] = uiputfile('*.png');
     if isequal(file,0) || isequal(path,0)
     else
@@ -210,14 +212,45 @@ function saveGrpBtn_Callback(hObject, eventdata, handles)
     else
         file=fullfile(path,file);
         fig2=figure(2);
-        plot(modelx,modely,'linewidth',4,'color','k');
-        xlabel('Velocity (m/s)');
+        
+        velmin=0;
+        velmax=uitableData(end,4);    
+        depthmax=sum(uitableData(:,2)); 
+        
+        xlabel('Velocity (ms^{-1})');
         ylabel('Depth (m)');
-        xlim([min(Vs(:))-(max(Vs(:))-min(Vs(:)))*5/100 max(Vs(:))+(max(Vs(:))-min(Vs(:)))*5/100]);
-        ylim([0 modely(end)]);
+        set(gca, 'YDir','reverse');
+        
+        xlim([velmin velmax]);
+        ylim([0 depthmax]);
+        
+        cmap=hot(500);
+        if get(handles.coloredLayersChk, 'Value')
+            newLim = xlim(handles.modelAxes);
+            j=1;    
+            for i=1:layerNum
+                patch([0 newLim(2) newLim(2) 0],[modely(j) modely(j) modely(j+1) modely(j+1)],cmap(i*5),'EdgeColor', 'k', 'FaceAlpha', 0.4);hold on;
+                j=j+2;        
+            end;
+        end;
+    
+        plot(modelx,modely,'linewidth',4,'color','k');
+
         set(gca, 'YDir','reverse')
-        set(gca,'FontSize',14)
-        grid on
+        xlim([0 max(modelx)+(max(modelx)-min(modelx))*5/100]);
+        ylim([0 modely(end)]);
+        xlabel('Velocity (ms^{-1})');
+        ylabel('Depth (m)');
+        set(gca,'FontSize',14);
+        
+%         plot(modelx,modely,'linewidth',4,'color','k');
+%         xlabel('Velocity (m/s)');
+%         ylabel('Depth (m)');
+%         xlim([min(Vs(:))-(max(Vs(:))-min(Vs(:)))*5/100 max(Vs(:))+(max(Vs(:))-min(Vs(:)))*5/100]);
+%         ylim([0 modely(end)]);
+%         set(gca, 'YDir','reverse')
+%         set(gca,'FontSize',14)
+%         grid on
         saveas(fig2,file);
         close(fig2);    
     end;
@@ -253,8 +286,9 @@ function layerNumEdit_Callback(hObject, eventdata, handles)
 function loadPrmBtn_Callback(hObject, eventdata, handles)
     global uitableData;
 
-    [file,path] = uigetfile('*.txt');
+    [file,path] = uigetfile('*.txt',' ');
     if isequal(file,0) || isequal(path,0)
+        
     else
         file=fullfile(path,file);
         f=fopen(file);
@@ -335,8 +369,9 @@ function savePrmBtn_Callback(hObject, eventdata, handles)
                 end;
         end;
 
-        [file,path] = uiputfile('*.txt');
+        [file,path] = uiputfile('*.txt',' ');
         if isequal(file,0) || isequal(path,0)
+            set(handles.modelPrmTable,'Data',uitableData);
         else
             file=fullfile(path,file);
             f=fopen(file,'wt');
@@ -345,7 +380,7 @@ function savePrmBtn_Callback(hObject, eventdata, handles)
             for i=1:layerNum
                 S=uitableData(i,:);
                 fprintf(f,'Layer_No: %d\n',i);
-                fprintf(f,'%d %d %1.3f %1.3f\n',S(1),S(2),S(3),S(4));
+                fprintf(f,'%d %d %1.4f %1.4f\n',S(1),S(2),S(3),S(4));
             end;
             fclose(f);
             set(handles.modelPrmTable,'Data',uitableData);
