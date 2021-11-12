@@ -217,48 +217,60 @@ function startBtn_Callback(hObject, eventdata, handles)
     [file1,name1,ext1] = fileparts(file);
     file2=strcat(name1,'_output.txt');
     file3=fullfile('Outputs',file2);
-    f=fopen(file3,'wt');
-    fprintf(f,'HVSR data file: %s\n',file2);
-    fprintf(f,'Inversion parameters\n');
-    fprintf(f,'Number_of_Genes: %d\n',geneNum);
-    fprintf(f,'Number_of_Populations: %d\n',popNum);
-    fprintf(f,'Number_of_Iterations: %d\n',iterNum);
-    fprintf(f,'Number_of_Inversions: %d\n',invNum);
-    fprintf(f,'Model parameters\n');
-    fprintf(f,'Number_of_Layers: %d\n',layerNum);
-    fprintf(f,'Minimum_Frequency: %2.3f\n',freqMin);
-    fprintf(f,'Maximum_Frequency: %2.3f\n',freqMax);
-    for i=1:layerNum
-        S=initModData(i,:);
-        fprintf(f,'Layer_No: %d\n',i);
-        fprintf(f,'HMin HMax VMin VMax DenMin DenMax DampMin DampMax\n');
-        fprintf(f,'%1.3f %1.3f %1.3f %1.3f %1.3f %1.3f %1.3f %1.3f\n',S(1),S(2),S(3),S(4),S(5),S(6),S(7),S(8));
+    
+    direc=0;
+    if ~exist('Outputs', 'dir')
+       mkdir('Outputs')
+       direc=1;
+    end 
+    
+    if direc == 1
+        f=fopen(file3,'wt');
+        fprintf(f,'HVSR data file: %s\n',file2);
+        fprintf(f,'Inversion parameters\n');
+        fprintf(f,'Number_of_Genes: %d\n',geneNum);
+        fprintf(f,'Number_of_Populations: %d\n',popNum);
+        fprintf(f,'Number_of_Iterations: %d\n',iterNum);
+        fprintf(f,'Number_of_Inversions: %d\n',invNum);
+        fprintf(f,'Model parameters\n');
+        fprintf(f,'Number_of_Layers: %d\n',layerNum);
+        fprintf(f,'Minimum_Frequency: %2.3f\n',freqMin);
+        fprintf(f,'Maximum_Frequency: %2.3f\n',freqMax);
+        for i=1:layerNum
+            S=initModData(i,:);
+            fprintf(f,'Layer_No: %d\n',i);
+            fprintf(f,'HMin HMax VMin VMax DenMin DenMax DampMin DampMax\n');
+            fprintf(f,'%1.3f %1.3f %1.3f %1.3f %1.3f %1.3f %1.3f %1.3f\n',S(1),S(2),S(3),S(4),S(5),S(6),S(7),S(8));
+        end;
+        fprintf(f,'Outputs\n');
     end;
-
-    fprintf(f,'Outputs\n');
 
     par=Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,HVSR,freqMin,freqMax,sampleNum,initModData,handles.modelAxes);
-
+    
     sz=size(par);
-
-    for i=1:sz(1)
-        fprintf(f,'Inversion_No:%d\n',i);
-        S=par(i,:);   
-        fprintf(f,'H V Den Damp\n');
-        a=1;b=4;
-        for j=1:sz(2)/4   
-            c=S(a:b);
-            fprintf(f,'%1.4f %1.4f %1.4f %1.4f\n',c(1),c(2),c(3),c(4));
-            a=a+4;b=b+4;
-        end; 
+    
+    if direc == 1        
+        for i=1:sz(1)
+            fprintf(f,'Inversion_No:%d\n',i);
+            S=par(i,:);   
+            fprintf(f,'H V Den Damp\n');
+            a=1;b=4;
+            for j=1:sz(2)/4   
+                c=S(a:b);
+                fprintf(f,'%1.4f %1.4f %1.4f %1.4f\n',c(1),c(2),c(3),c(4));
+                a=a+4;b=b+4;
+            end; 
+        end;
     end;
-
+    
     for i=1:sz(2)
         hMean(1,i)=mean(par(:,i));
     end;
-
-    fprintf(f,'Average Model\n');
-    fprintf(f,'H V Den Damp\n');
+    
+    if exist(file3, 'file') == 2
+        fprintf(f,'Average Model\n');
+        fprintf(f,'H V Den Damp\n');
+    end;
     
     j=1;i=1;
     while i<sz(2)
@@ -266,11 +278,15 @@ function startBtn_Callback(hObject, eventdata, handles)
         Vs(j)=round(hMean(i));i=i+1;
         Den(j)=round(hMean(i),4);i=i+1;
         Damp(j)=round(hMean(i),4);i=i+1;      
-        fprintf(f,'%1.4f %1.4f %1.4f %1.4f\n',H(j),Vs(j),Den(j),Damp(j));
-       j=j+1;
+        if direc == 1
+            fprintf(f,'%1.4f %1.4f %1.4f %1.4f\n',H(j),Vs(j),Den(j),Damp(j));
+        end;
+        j=j+1;
     end;
-
-    fclose(f);
+    
+    if direc == 1
+        fclose(f);
+    end;
 
     depthmax=sum(initModData(:,2));
 
