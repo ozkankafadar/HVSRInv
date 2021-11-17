@@ -219,30 +219,34 @@ function startBtn_Callback(hObject, eventdata, handles)
     file3=fullfile('Outputs',file2);
     
     direc=0;
+    
     if ~exist('Outputs', 'dir')
-       mkdir('Outputs')
-       direc=1;
-    end 
+        mkdir('Outputs')
+        direc=1;
+    else
+        direc=1;
+    end
     
     if direc == 1
-        f=fopen(file3,'wt');
-        fprintf(f,'HVSR data file: %s\n',file2);
-        fprintf(f,'Inversion parameters\n');
-        fprintf(f,'Number_of_Genes: %d\n',geneNum);
-        fprintf(f,'Number_of_Populations: %d\n',popNum);
-        fprintf(f,'Number_of_Iterations: %d\n',iterNum);
-        fprintf(f,'Number_of_Inversions: %d\n',invNum);
-        fprintf(f,'Model parameters\n');
-        fprintf(f,'Number_of_Layers: %d\n',layerNum);
-        fprintf(f,'Minimum_Frequency: %2.3f\n',freqMin);
-        fprintf(f,'Maximum_Frequency: %2.3f\n',freqMax);
+        fil=fopen(file3,'wt');
+        fprintf(fil,'HVSR data file: %s\n',file2);
+        fprintf(fil,'Inversion parameters\n');
+        fprintf(fil,'Number_of_Genes: %d\n',geneNum);
+        fprintf(fil,'Number_of_Populations: %d\n',popNum);
+        fprintf(fil,'Number_of_Iterations: %d\n',iterNum);
+        fprintf(fil,'Number_of_Inversions: %d\n',invNum);
+        fprintf(fil,'Model parameters\n');
+        fprintf(fil,'Number_of_Layers: %d\n',layerNum);
+        fprintf(fil,'Minimum_Frequency: %2.3f\n',freqMin);
+        fprintf(fil,'Maximum_Frequency: %2.3f\n',freqMax);
+            
         for i=1:layerNum
             S=initModData(i,:);
-            fprintf(f,'Layer_No: %d\n',i);
-            fprintf(f,'HMin HMax VMin VMax DenMin DenMax DampMin DampMax\n');
-            fprintf(f,'%1.3f %1.3f %1.3f %1.3f %1.3f %1.3f %1.3f %1.3f\n',S(1),S(2),S(3),S(4),S(5),S(6),S(7),S(8));
+            fprintf(fil,'Layer_No: %d\n',i);
+            fprintf(fil,'HMin HMax VMin VMax DenMin DenMax DampMin DampMax\n');
+            fprintf(fil,'%1.3f %1.3f %1.3f %1.3f %1.3f %1.3f %1.3f %1.3f\n',S(1),S(2),S(3),S(4),S(5),S(6),S(7),S(8));
         end;
-        fprintf(f,'Outputs\n');
+            fprintf(fil,'Outputs\n');
     end;
 
     par=Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,HVSR,freqMin,freqMax,sampleNum,initModData,handles.modelAxes);
@@ -251,13 +255,13 @@ function startBtn_Callback(hObject, eventdata, handles)
     
     if direc == 1        
         for i=1:sz(1)
-            fprintf(f,'Inversion_No:%d\n',i);
+            fprintf(fil,'Inversion_No:%d\n',i);
             S=par(i,:);   
-            fprintf(f,'H V Den Damp\n');
+            fprintf(fil,'H V Den Damp\n');
             a=1;b=4;
             for j=1:sz(2)/4   
                 c=S(a:b);
-                fprintf(f,'%1.4f %1.4f %1.4f %1.4f\n',c(1),c(2),c(3),c(4));
+                fprintf(fil,'%1.4f %1.4f %1.4f %1.4f\n',c(1),c(2),c(3),c(4));
                 a=a+4;b=b+4;
             end; 
         end;
@@ -267,9 +271,9 @@ function startBtn_Callback(hObject, eventdata, handles)
         hMean(1,i)=mean(par(:,i));
     end;
     
-    if exist(file3, 'file') == 2
-        fprintf(f,'Average Model\n');
-        fprintf(f,'H V Den Damp\n');
+    if direc == 1
+        fprintf(fil,'Average Model\n');
+        fprintf(fil,'H V Den Damp\n');
     end;
     
     j=1;i=1;
@@ -279,15 +283,15 @@ function startBtn_Callback(hObject, eventdata, handles)
         Den(j)=round(hMean(i),4);i=i+1;
         Damp(j)=round(hMean(i),4);i=i+1;      
         if direc == 1
-            fprintf(f,'%1.4f %1.4f %1.4f %1.4f\n',H(j),Vs(j),Den(j),Damp(j));
+            fprintf(fil,'%1.4f %1.4f %1.4f %1.4f\n',H(j),Vs(j),Den(j),Damp(j));
         end;
         j=j+1;
     end;
     
     if direc == 1
-        fclose(f);
-    end;
-
+        fclose(fil);
+    end;    
+    
     depthmax=sum(initModData(:,2));
 
     [modelx,modely]=SetArray(H,Vs,depthmax);
@@ -351,6 +355,11 @@ function startBtn_Callback(hObject, eventdata, handles)
     zoom on;
 
     set(handles.pushbutton23,'enable','on');
+    
+    if direc ~= 1
+        msgbox('Output file does not create!Please check the permisions of the folder in which the exe file and MATLAB files are located.');
+    end;
+
 
 %Number of Layers Edit Call Event
 function layerNumEdit_Callback(hObject, eventdata, handles)
