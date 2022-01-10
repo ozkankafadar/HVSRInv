@@ -1,4 +1,4 @@
-function [parameters] = Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,HVSR,freqMin,freqMax,sampleNum,initModData,handle)
+function [parameters] = Inversion( LayerNum,InvNum,IterNum,PopNum,GeneNum,Freqs,HVSRData,FreqMin,FreqMax,SampleNum,InitModData,Handle)
 % layerNum   : Number of layers
 % invNumber  : Number of inversions
 % iterNum    : Number of iterations
@@ -11,18 +11,18 @@ function [parameters] = Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,
 % sampleNum  : Number of samples
 % initModData: Initial parameters for analysis
 % handle     : Axes name
-    param=zeros(layerNum*4-1,3);
+    param=zeros(LayerNum*4-1,3);
     k=1;
-    for i=1:layerNum
-        S=initModData(i,:);    
-        param(k,1)=S(3);param(k,2)=S(4);param(k,3)=geneNum;
+    for i=1:LayerNum
+        S=InitModData(i,:);    
+        param(k,1)=S(3);param(k,2)=S(4);param(k,3)=GeneNum;
         k=k+1;
-        param(k,1)=S(5);param(k,2)=S(6);param(k,3)=geneNum;
+        param(k,1)=S(5);param(k,2)=S(6);param(k,3)=GeneNum;
         k=k+1;
-        param(k,1)=S(7);param(k,2)=S(8);param(k,3)=geneNum;
+        param(k,1)=S(7);param(k,2)=S(8);param(k,3)=GeneNum;
         k=k+1;
-        if i<layerNum
-            param(k,1)=S(1);param(k,2)=S(2);param(k,3)=geneNum;
+        if i<LayerNum
+            param(k,1)=S(1);param(k,2)=S(2);param(k,3)=GeneNum;
             k=k+1;
         end;
     end;
@@ -30,26 +30,26 @@ function [parameters] = Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,
     minParam=param(:,1);
     maxParam=param(:,2);
     genePos=FindGenePos(param(:,3));
-    freq=linspace(0,freqMax,sampleNum);    
-    hvsr=interp1(freqs,HVSR,freq);
+    freq=linspace(0,FreqMax,SampleNum);    
+    hvsr=interp1(Freqs,HVSRData,freq);
     
-    [val,idx]=min(abs(freq-freqMin));
+    [val,idx]=min(abs(freq-FreqMin));
     point1=idx;    
-    [val,idx]=min(abs(freq-freqMax));
+    [val,idx]=min(abs(freq-FreqMax));
     point2=idx;
     
-    for j=1:invNum    
+    for j=1:InvNum    
         rand('twister',sum(100*rand*clock));    
-        pop=round(rand(popNum,max(genePos)));      
+        pop=round(rand(PopNum,max(genePos)));      
     
         fp = waitbar(0,'Please wait ...');
-        fdb_count=1.0/(iterNum);
+        fdb_count=1.0/(IterNum);
         fdb_inc=0;  
     
-        for jm=1:iterNum        
+        for jm=1:IterNum        
             %High-order Mutation        
-            if jm>=iterNum*0.3
-                if sum(abs(diff(gof(1,jm-iterNum*0.1:jm-1))))<1e-4;
+            if jm>=IterNum*0.3
+                if sum(abs(diff(gof(1,jm-IterNum*0.1:jm-1))))<1e-4;
                     prob=rand(1,1);%Probability
                     newPop=Mutation(pop,prob);%New Population
                     pop=newPop;   
@@ -57,11 +57,11 @@ function [parameters] = Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,
             end;
         
             %Decode Operation
-            for jk=1:layerNum
+            for jk=1:LayerNum
                 Velocity(jk,:)=round(Decode(pop(:,genePos(8*(jk-1)+1):genePos(8*(jk-1)+2)),minParam(4*(jk-1)+1),maxParam(4*(jk-1)+1)));
                 Density(jk,:)=round(Decode(pop(:,genePos(8*(jk-1)+3):genePos(8*(jk-1)+4)),minParam(4*(jk-1)+2),maxParam(4*(jk-1)+2)),4);
                 Damping(jk,:)=Decode(pop(:,genePos(8*(jk-1)+5):genePos(8*(jk-1)+6)),minParam(4*(jk-1)+3),maxParam(4*(jk-1)+3));
-                if jk<layerNum
+                if jk<LayerNum
                     Thickness(jk,:)=round(Decode(pop(:,genePos(8*(jk-1)+7):genePos(8*(jk-1)+8)),minParam(4*(jk-1)+4),maxParam(4*(jk-1)+4)));
                 end;
             end;
@@ -91,10 +91,10 @@ function [parameters] = Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,
                 end;            
             end;        
         
-            if jm==iterNum
-                results=zeros(layerNum,4);
-                for i=1:layerNum                
-                    if i<layerNum
+            if jm==IterNum
+                results=zeros(LayerNum,4);
+                for i=1:LayerNum                
+                    if i<LayerNum
                         results(i,1)=Thickness2(i);
                     else
                         results(i,1)=0;
@@ -105,12 +105,12 @@ function [parameters] = Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,
                 end;
             
                 velmin=0;
-                velmax=initModData(end,4);
-                depthmin=min(initModData(:,1));
-                depthmax=sum(initModData(:,2));
+                velmax=InitModData(end,4);
+                depthmin=min(InitModData(:,1));
+                depthmax=sum(InitModData(:,2));
         
                 mm=1;
-                for mr=1:layerNum
+                for mr=1:LayerNum
                     for o=1:4
                         parameters(j,mm)=results(mr,o);
                         mm=mm+1;
@@ -119,26 +119,26 @@ function [parameters] = Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,
             
                 [modelx,modely]=SetArray(Thickness2,Velocity2,depthmax);
             
-                axes(handle);       
-                plot(handle,modelx,modely,'linewidth',2,'color',[.7 .7 .7]),hold on;
+                axes(Handle);       
+                plot(Handle,modelx,modely,'linewidth',2,'color',[.7 .7 .7]),hold on;
                 xlabel('Velocity (ms^{-1})');
                 ylabel('Depth (m)');
                 xlim([velmin velmax]);
                 ylim([depthmin depthmax]);
-                set(handle, 'YDir','reverse')
-                set(handle,'FontSize',12) 
+                set(Handle, 'YDir','reverse')
+                set(Handle,'FontSize',12) 
             end;
         
             sel=Selection(fit,pop);%Selection
             cross=Crossover(sel);%CrossOver
             mut=Mutation(cross,.007);%Mutation
-            pop=[elite;mut(1:popNum-1,:)]; %Elitism and new population
+            pop=[elite;mut(1:PopNum-1,:)]; %Elitism and new population
             gof(1,jm)=min(goodnessFit);
         
             sel=[];cross=[];mut=[];
         
             fdb_inc=fdb_inc+fdb_count;
-            waitbar(fdb_inc,fp,sprintf('Progress: %d %%, (%d in %d)', floor(jm/(iterNum)*100),j,invNum));
+            waitbar(fdb_inc,fp,sprintf('Progress: %d %%, (%d in %d)', floor(jm/(IterNum)*100),j,InvNum));
         end        
         close(fp); 
     end;

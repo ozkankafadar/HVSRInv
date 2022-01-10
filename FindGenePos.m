@@ -1,12 +1,12 @@
-function output=FindGenePos(C)
+function output=FindGenePos(Position)
 % C : Position vector
-    if size(C,2)>1
-        C=[0;C'];
+    if size(Position,2)>1
+        Position=[0;Position'];
     else
-        C=[0;C];
+        Position=[0;Position];
     end;
-    for m=1:length(C)-1
-        output(2*m-1)=sum(C(1:m))+1;
-        output(2*m)=sum(C(1:m+1));
+    for m=1:length(Position)-1
+        output(2*m-1)=sum(Position(1:m))+1;
+        output(2*m)=sum(Position(1:m+1));
     end;
 end

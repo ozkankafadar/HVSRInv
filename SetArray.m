@@ -1,23 +1,23 @@
-function [ x,y ] = SetArray( T,V,depthmax )
+function [ x,y ] = SetArray( Thickness,Velocity,depthmax )
 % T          : Thickness array
 % V          : Velocity array
 % depthmax   : Maximum depth
-    if length(T)<length(V)
-        T(end+1)=0;
+    if length(Thickness)<length(Velocity)
+        Thickness(end+1)=0;
     end;
     j=1;
-    x(j)=V(1);
+    x(j)=Velocity(1);
     y(j)=0;
     j=j+1;
-    x(j)=V(1);
-    y(j)=T(1);
+    x(j)=Velocity(1);
+    y(j)=Thickness(1);
     j=j+1;
-    for i=2:length(V)
-        x(j)=V(i);
+    for i=2:length(Velocity)
+        x(j)=Velocity(i);
         y(j)=y(j-1);
         j=j+1;
-        x(j)=V(i);
-        y(j)=y(j-1)+T(i);
+        x(j)=Velocity(i);
+        y(j)=y(j-1)+Thickness(i);
         j=j+1;
     end;
     y(j-1)=depthmax;

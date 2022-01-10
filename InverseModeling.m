@@ -248,8 +248,11 @@ function startBtn_Callback(hObject, eventdata, handles)
         end;
             fprintf(fil,'Outputs\n');
     end;
-
+    
+    beginpar=tic;
     par=Inversion( layerNum,invNum,iterNum,popNum,geneNum,freqs,HVSR,freqMin,freqMax,sampleNum,initModData,handles.modelAxes);
+    endpar=toc(beginpar);
+    fprintf('Total time: %f seconds\n', endpar);
     
     sz=size(par);
     

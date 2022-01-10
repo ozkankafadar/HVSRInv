@@ -1,8 +1,8 @@
-function output = Mutation(Old,P)
+function output = Mutation(OldGeneration,Probability)
 % Old : Old generation
 % P   : Probability value
-    rnd=rand(size(Old));
-    mut =find(rnd<P);
-    output = Old;
-    output(mut) = 1-Old(mut);
+    rnd=rand(size(OldGeneration));
+    mut =find(rnd<Probability);
+    output = OldGeneration;
+    output(mut) = 1-OldGeneration(mut);
 end
