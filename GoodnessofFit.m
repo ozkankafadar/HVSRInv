@@ -1,21 +1,21 @@
-function output=GoodnessofFit(SyntheticData,ObservedData)
-% Syn  : Synthetic Data
-% Obs  : Observed Data
-    if size(ObservedData,2)>1
-        if size(ObservedData,1)>1
+function output=GoodnessofFit(SynData,ObsData)
+% SynData  : Synthetic Data
+% ObsData  : Observed Data
+    if size(ObsData,2)>1
+        if size(ObsData,1)>1
             error('Invalid Format');
         else
-            ObservedData=ObservedData';
+            ObsData=ObsData';
         end;
     end;
 
-    for in=1:length(ObservedData)
-        y(in,:)=(SyntheticData(in,:)-ObservedData(in,1));
+    for in=1:length(ObsData)
+        y(in,:)=(SynData(in,:)-ObsData(in,1));
     end;
 
-    if length(ObservedData)==1
-        output=sqrt((y.^2)/length(ObservedData));
+    if length(ObsData)==1
+        output=sqrt((y.^2)/length(ObsData));
     else
-        output=sqrt(sum(y.^2)/length(ObservedData));
+        output=sqrt(sum(y.^2)/length(ObsData));
     end;
 end

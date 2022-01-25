@@ -1,16 +1,16 @@
-function [parameters] = Inversion( LayerNum,InvNum,IterNum,PopNum,GeneNum,Freqs,HVSRData,FreqMin,FreqMax,SampleNum,InitModData,Handle)
-% layerNum   : Number of layers
-% invNumber  : Number of inversions
-% iterNum    : Number of iterations
-% geneNum    : number of genes
-% popNum     : Number of Populations
-% freqs      : Frequency array
-% HVSR       : Horizontal-to-vertical spectral ratio data
-% freqMin    : Mimimum frequency for analysis
-% freqMax    : Maximum frequency for analysis
-% sampleNum  : Number of samples
-% initModData: Initial parameters for analysis
-% handle     : Axes name
+function [parameters] = Inversion( LayerNum,InvNum,IterNum,PopNum,GeneNum,Freq,HVSRData,FreqMin,FreqMax,SampleNum,InitModData,Handle)
+% LayerNum   : Number of layers
+% InvNumber  : Number of inversions
+% IterNum    : Number of iterations
+% GeneNum    : number of genes
+% PopNum     : Number of Populations
+% Freq       : Frequency array
+% HVSRData   : Horizontal-to-vertical spectral ratio data
+% FreqMin    : Mimimum frequency for analysis
+% FreqMax    : Maximum frequency for analysis
+% SampleNum  : Number of samples
+% InitModData: Initial parameters for analysis
+% Handle     : Axes name
     param=zeros(LayerNum*4-1,3);
     k=1;
     for i=1:LayerNum
@@ -31,7 +31,7 @@ function [parameters] = Inversion( LayerNum,InvNum,IterNum,PopNum,GeneNum,Freqs,
     maxParam=param(:,2);
     genePos=FindGenePos(param(:,3));
     freq=linspace(0,FreqMax,SampleNum);    
-    hvsr=interp1(Freqs,HVSRData,freq);
+    hvsr=interp1(Freq,HVSRData,freq);
     
     [val,idx]=min(abs(freq-FreqMin));
     point1=idx;    
@@ -39,7 +39,8 @@ function [parameters] = Inversion( LayerNum,InvNum,IterNum,PopNum,GeneNum,Freqs,
     point2=idx;
     
     for j=1:InvNum    
-        rand('twister',sum(100*rand*clock));    
+        rand('twister',sum(100*clock));         
+       
         pop=round(rand(PopNum,max(genePos)));      
     
         fp = waitbar(0,'Please wait ...');
@@ -79,8 +80,8 @@ function [parameters] = Inversion( LayerNum,InvNum,IterNum,PopNum,GeneNum,Freqs,
             fitIndex=find(fit==max(fit));
             fitIndex=fitIndex(1);
             elite=pop(fitIndex,:);%Elite individual        
-            bestFit(jm)=goodnessFit(fitIndex);      
-        
+            bestFit(jm)=goodnessFit(fitIndex);   
+            
             %Reserve Best Individual
             if jm>1
                 if bestFit(jm)<min(bestFit(1:jm-1))
@@ -88,10 +89,26 @@ function [parameters] = Inversion( LayerNum,InvNum,IterNum,PopNum,GeneNum,Freqs,
                     Thickness2=Thickness(:,fitIndex);
                     Density2=Density(:,fitIndex);
                     Damping2=Damping(:,fitIndex);
+                    jm2=jm;
                 end;            
             end;        
         
-            if jm==IterNum
+            if jm==IterNum                
+                %GoodnessofFit
+                cla(figure(j));
+                figure(j)
+                plot(0:IterNum-1,bestFit,'k','LineWidth',1)
+                hold on
+                plot(jm2,bestFit(jm2),'ro','MarkerFaceColor','r','MarkerSize',10)
+                xlim([0 IterNum]);
+                
+                
+                title(['Inversion No: ' num2str(j)])
+                xlabel('Generations');
+                ylabel('RMSE');
+                set(gcf,'position',[100,100,500,300])
+                set(gca,'FontSize',22) 
+      
                 results=zeros(LayerNum,4);
                 for i=1:LayerNum                
                     if i<LayerNum
@@ -115,7 +132,9 @@ function [parameters] = Inversion( LayerNum,InvNum,IterNum,PopNum,GeneNum,Freqs,
                         parameters(j,mm)=results(mr,o);
                         mm=mm+1;
                     end;
-                end;          
+                end;
+                
+                parameters(j,mm)=bestFit(jm2);
             
                 [modelx,modely]=SetArray(Thickness2,Velocity2,depthmax);
             

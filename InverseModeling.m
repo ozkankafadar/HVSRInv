@@ -266,9 +266,13 @@ function startBtn_Callback(hObject, eventdata, handles)
                 c=S(a:b);
                 fprintf(fil,'%1.4f %1.4f %1.4f %1.4f\n',c(1),c(2),c(3),c(4));
                 a=a+4;b=b+4;
-            end; 
+            end;
+            fprintf(fil,'Goodness of Fit:%4f\n',S(a));
         end;
     end;
+    
+    
+
     
     for i=1:sz(2)
         hMean(1,i)=mean(par(:,i));
@@ -301,23 +305,13 @@ function startBtn_Callback(hObject, eventdata, handles)
    
     axes(handles.modelAxes);
 
-    cmap=hot(500);
-    if get(handles.coloredLayersChk, 'Value')
-        newLim = xlim(handles.modelAxes);
-        j=1;    
-        for i=1:layerNum
-            patch([0 newLim(2) newLim(2) 0],[modely(j) modely(j) modely(j+1) modely(j+1)],cmap(i*5),'EdgeColor', 'k', 'FaceAlpha', 0.4);hold on;
-            j=j+2;        
-        end;
-        grid off;
-    else
-        grid on;
-    end;
+    set(handles.coloredLayersChk, 'Value', 0)
+    
     plot(modelx,modely,'linewidth',4,'color','r');
-
+    grid on;
+    
     set(gca, 'YDir','reverse')
     set(gca,'FontSize',11)
-    %xlim([0 max(modelx)+max(modelx)*10/100]);
     ylim([0 modely(end)]);
     xlabel('Velocity (ms^{-1})');
     ylabel('Depth (m)');
@@ -635,8 +629,8 @@ function saveGraphicsBtn_Callback(hObject, eventdata, handles)
     if isequal(file,0) || isequal(path,0)
     else
         file=fullfile(path,file);
-    
-        fig=figure(1);
+        
+        fig=figure;
         semilogx(freqs,HVSR,'k','linewidth',1.5),hold on
         semilogx(freqs2,HVSR2,'--r','linewidth',2),hold off
         xlabel('Frequency (Hz)');
@@ -658,10 +652,10 @@ function saveGraphicsBtn_Callback(hObject, eventdata, handles)
     if isequal(file,0) || isequal(path,0)
     else
         file=fullfile(path,file);    
-        fig2=figure(2); 
+        fig2=figure; 
 
         sz=size(par);
-        sz2=sz(2)/4;
+        sz2=(sz(2)-1)/4;
     
         H=zeros(1,sz2);
         Vs=zeros(1,sz2);
@@ -713,6 +707,7 @@ function saveGraphicsBtn_Callback(hObject, eventdata, handles)
         ylim([0 modely(end)]);
         xlabel('Velocity (ms^{-1})');
         ylabel('Depth (m)');
+        set(gca,'FontSize',14);
 
         saveas(fig2,file);
         close(fig2);    

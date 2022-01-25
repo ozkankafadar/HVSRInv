@@ -141,20 +141,10 @@ function computeHVSRBtn_Callback(hObject, eventdata, handles)
 
     axes(handles.modelAxes);    
     
-    if get(handles.coloredLayersChk, 'Value')
-        cmap=hot(500);
-        newLim = xlim(handles.modelAxes);
-        j=1;    
-        for i=1:layerNum
-            patch([0 newLim(2) newLim(2) 0],[modely(j) modely(j) modely(j+1) modely(j+1)],cmap(i*5),'EdgeColor', 'k', 'FaceAlpha', 0.4);hold on;
-            j=j+2;        
-        end;
-        plot(handles.modelAxes,modelx,modely,'linewidth',4,'color','k');
-        grid off;
-    else
-        plot(handles.modelAxes,modelx,modely,'linewidth',4,'color','k');
-        grid on;
-    end;
+    set(handles.coloredLayersChk, 'Value', 0)
+    
+    plot(modelx,modely,'linewidth',4,'color','k');
+    grid on;
     
     set(handles.modelAxes, 'YDir','reverse')
     set(handles.modelAxes,'FontSize',11)
