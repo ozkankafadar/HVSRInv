@@ -1,0 +1,29 @@
+HVSR data file: Field_Example_2(ARL)_output.txt
+Inversion parameters
+Number_of_Genes: 9
+Number_of_Populations: 50
+Number_of_Iterations: 100
+Number_of_Inversions: 1
+Model parameters
+Number_of_Layers: 6
+Minimum_Frequency: 0.100
+Maximum_Frequency: 5.000
+Layer_No: 1
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+1.000 100.000 100.000 300.000 1.450 2.060 0.040 0.100
+Layer_No: 2
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+1.000 100.000 200.000 450.000 1.610 2.170 0.040 0.100
+Layer_No: 3
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+100.000 200.000 300.000 700.000 1.720 2.300 0.040 0.100
+Layer_No: 4
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+200.000 400.000 600.000 1000.000 1.910 2.410 0.020 0.100
+Layer_No: 5
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+50.000 300.000 800.000 1200.000 2.150 2.370 0.010 0.100
+Layer_No: 6
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+0.000 0.000 1000.000 2000.000 2.070 2.630 0.000 0.001
+Outputs

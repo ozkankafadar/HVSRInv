@@ -1,0 +1,43 @@
+HVSR data file: Synthetic_Model1_HVSR_%5Noise_output.txt
+Inversion parameters
+Number_of_Genes: 9
+Number_of_Populations: 100
+Number_of_Iterations: 300
+Number_of_Inversions: 2
+Model parameters
+Number_of_Layers: 4
+Minimum_Frequency: 0.100
+Maximum_Frequency: 5.000
+Layer_No: 1
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+10.000 30.000 150.000 350.000 1.400 1.600 0.005 0.090
+Layer_No: 2
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+25.000 75.000 250.000 450.000 1.500 1.700 0.003 0.070
+Layer_No: 3
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+40.000 120.000 400.000 600.000 1.800 2.000 0.001 0.050
+Layer_No: 4
+HMin HMax VMin VMax DenMin DenMax DampMin DampMax
+0.000 0.000 1400.000 1600.000 2.400 2.600 0.010 0.007
+Outputs
+Inversion_No:1
+H V Den Damp
+27.0000 288.0000 1.5499 0.0582
+49.0000 416.0000 1.5153 0.0699
+98.0000 575.0000 1.8000 0.0071
+0.0000 1592.0000 2.4497 0.0070
+Goodness of Fit:0.147650
+Inversion_No:2
+H V Den Damp
+26.0000 274.0000 1.4849 0.0574
+41.0000 350.0000 1.5998 0.0532
+78.0000 461.0000 1.9996 0.0135
+0.0000 1425.0000 2.4031 0.0074
+Goodness of Fit:0.150039
+Average Model
+H V Den Damp
+27.0000 281.0000 1.5174 0.0578
+45.0000 383.0000 1.5576 0.0615
+88.0000 518.0000 1.8998 0.0103
+0.0000 1509.0000 2.4264 0.0072
